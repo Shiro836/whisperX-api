@@ -1,3 +1,35 @@
+Flask API wrapper with Dockerfile
+
+Provides two endpoints:
+
+- `/transcribe`: transcribes an audio file
+- `/align`: aligns provided audio with text and returns word timestamps
+
+## /align
+body example:
+```json
+  {
+    "audio": "base64 encoded audio",
+    "transcript": [
+      {
+        "text": "forsen forsen forsen forsen forsen forsen forsen forsen forsen",
+        "start": 0.009,
+        "end": 2.141
+      }
+    ]
+  }
+```
+
+## /transcribe
+body example:
+```json
+  {
+    "audio": "base64 encoded audio"
+  }
+```
+
+<hr>
+
 <h1 align="center">WhisperX</h1>
 
 <p align="center">

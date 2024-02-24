@@ -21,14 +21,13 @@ N_SAMPLES_PER_TOKEN = HOP_LENGTH * 2  # the initial convolutions has stride 2
 FRAMES_PER_SECOND = exact_div(SAMPLE_RATE, HOP_LENGTH)  # 10ms per audio frame
 TOKENS_PER_SECOND = exact_div(SAMPLE_RATE, N_SAMPLES_PER_TOKEN)  # 20ms per audio token
 
-
-def load_audio(file: str, sr: int = SAMPLE_RATE):
+def load_audio(file: bytes, sr: int = SAMPLE_RATE):
     """
     Open an audio file and read as mono waveform, resampling as necessary
 
     Parameters
     ----------
-    file: str
+    file: bytes
         The audio file to open
 
     sr: int
@@ -47,7 +46,7 @@ def load_audio(file: str, sr: int = SAMPLE_RATE):
             "-threads",
             "0",
             "-i",
-            file,
+            "-",
             "-f",
             "s16le",
             "-ac",
@@ -58,7 +57,7 @@ def load_audio(file: str, sr: int = SAMPLE_RATE):
             str(sr),
             "-",
         ]
-        out = subprocess.run(cmd, capture_output=True, check=True).stdout
+        out = subprocess.run(cmd, capture_output=True, check=True, input=file).stdout
     except subprocess.CalledProcessError as e:
         raise RuntimeError(f"Failed to load audio: {e.stderr.decode()}") from e
 
